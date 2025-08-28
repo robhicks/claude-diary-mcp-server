@@ -1,8 +1,7 @@
 {
   "mcpServers": {
     "diary": {
-      "command": "node",
-      "args": ["/Users/robhicks/.claude/mcp-servers/diary-server/dist/index.js"],
+      "command": "/Users/robhicks/.claude/mcp-servers/diary-server/target/release/claude-diary-mcp-server",
       "env": {}
     }
   }
