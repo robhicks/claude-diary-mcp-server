@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "diary": {
+      "command": "node",
+      "args": ["/Users/robhicks/.claude/mcp-servers/diary-server/dist/index.js"],
+      "env": {}
+    }
+  }
+}
