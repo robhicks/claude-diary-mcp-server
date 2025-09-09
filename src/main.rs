@@ -45,10 +45,23 @@ impl DiaryMCPServer {
         let home_dir = dirs::home_dir()
             .ok_or_else(|| anyhow!("Could not find home directory"))?;
         
-        let diary_path = home_dir
-            .join(".claude")
-            .join("diaries")
-            .join("diary.db");
+        let primary_path = home_dir.join(".claude").join("diary.db");
+        let fallback_path = home_dir.join(".claude").join("diaries").join("diary.db");
+
+        let diary_path = if primary_path.exists() {
+            primary_path
+        } else if fallback_path.exists() {
+            // Move database from old location to new location
+            if let Some(parent) = primary_path.parent() {
+                std::fs::create_dir_all(parent)?;
+            }
+            std::fs::rename(&fallback_path, &primary_path)?;
+            println!("Migrated database from {} to {}", fallback_path.display(), primary_path.display());
+            primary_path
+        } else {
+            // Neither exists, use primary path (will create new database)
+            primary_path
+        };
 
         let db = Connection::open(&diary_path)?;
         
